@@ -48,6 +48,7 @@ void dezalocare(struct Masina* m) {
 	{
 		free(m->sofer);
 		m->sofer = NULL;
+		//printf("Dezalocare reusita");
 	}
 }
 
@@ -57,5 +58,6 @@ int main() {
 	afisare(masina);
 	modificaSofer(&masina, "Andrei");
 	afisare(masina);
+	dezalocare(&masina);
 	return 0;
 }
