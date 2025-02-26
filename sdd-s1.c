@@ -9,27 +9,53 @@ struct Masina {
 	char initialaProducator;
 };
 
-struct Masina initializare(/*parametri necesari*/) {
-	struct Masina s;
-	s.id = 1;
-	//initializare structura 
-	return s;
+struct Masina initializare(int id, int anFabricatie, const char* sofer, float kilometriiParcursi, char initialaProducator) {
+	struct Masina m;
+
+	m.id = id;
+	m.anFabricatie = anFabricatie;
+	m.kilometriiParcursi = kilometriiParcursi;
+	m.initialaProducator = initialaProducator;
+	m.sofer = (char*)malloc(strlen(sofer) + 1);
+	strcpy_s(m.sofer, strlen(sofer) + 1, sofer);
+
+	return m;
 }
 
-void afisare(struct Masina s) {
-	//afisarea tuturor atributelor.
+void afisare(struct Masina m) {
+	printf("\nId: %d\n", m.id);
+	printf("An fabricatie: %d\n", m.anFabricatie);
+	printf("Sofer: %s\n", m.sofer);
+	printf("Kilometrii Parcursi: %.2f\n", m.kilometriiParcursi);
+	printf("Initiala Producatorului: %c\n", m.initialaProducator);
 }
 
-void modifica_Atribut(struct Masina s) {
-	//modificarea unui atribut
+void modificaSofer(struct Masina* m, const char* soferNou) {
+	if (strlen(soferNou) > 2)
+	{
+		if (m->sofer != NULL)
+		{
+			free(m->sofer);
+		}
+		m->sofer = (char*)malloc(strlen(soferNou) + 1);
+		strcpy_s(m->sofer, strlen(soferNou) + 1, soferNou);
+	}
+
 }
 
-void dezalocare(struct Masina* s) {
-	//dezalocare campuri alocate dinamic
+void dezalocare(struct Masina* m) {
+	if (m->sofer != NULL)
+	{
+		free(m->sofer);
+		m->sofer = NULL;
+	}
 }
 
 int main() {
 	struct Masina masina;
-
+	masina = initializare(1, 2004, "Robert", 2000, 'P'); //"P" -> 2 octeti
+	afisare(masina);
+	modificaSofer(&masina, "Andrei");
+	afisare(masina);
 	return 0;
 }
