@@ -1,4 +1,4 @@
 ﻿  sdd-s1.c
-D:\MVS\sdd2024\sdd2024\sdd-s1.c(19,26): warning C4013: 'strlen' undefined; assuming extern returning int
-D:\MVS\sdd2024\sdd2024\sdd-s1.c(20,2): warning C4013: 'strcpy_s' undefined; assuming extern returning int
-  sdd2024.vcxproj -> D:\MVS\sdd2024\x64\Debug\sdd2024.exe
+D:\MVS\sdd2025\sdd2024\sdd-s1.c(19,26): warning C4013: 'strlen' undefined; assuming extern returning int
+D:\MVS\sdd2025\sdd2024\sdd-s1.c(20,2): warning C4013: 'strcpy_s' undefined; assuming extern returning int
+  sdd2024.vcxproj -> D:\MVS\sdd2025\x64\Debug\sdd2024.exe
