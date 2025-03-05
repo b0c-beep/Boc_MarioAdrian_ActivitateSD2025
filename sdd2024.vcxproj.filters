@@ -18,5 +18,8 @@
     <ClCompile Include="sdd-s1.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="sdd-s2.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
