@@ -25,11 +25,17 @@ void afisare(struct Masina m) {
 	printf("An fabricatie: %d \n", m.anFabricatie);
 	printf("Sofer: %s \n", m.sofer);
 	printf("Kilometrii Parcursi : %f \n", m.kilometriiParcursi);
-	printf("Initiala producator: %c \n", m.initialaProducator);
+	printf("Initiala producator: %c \n\n", m.initialaProducator);
 }
 
 void afisareVector(struct Masina* vector, int nrElemente) {
-	//afisarea elementelor din vector apeland functia afisare
+	if (nrElemente > 0 && vector != NULL)
+	{
+		for (int i = 0; i < nrElemente; i++)
+		{
+			afisare(vector[i]);
+		}
+	}	
 }
 
 struct Masina* copiazaPrimeleNElemente(struct Masina* vector, int nrElemente, int nrElementeCopiate) {
@@ -62,5 +68,19 @@ struct Masina getPrimulElementConditionat(struct Masina* vector, int nrElemente,
 
 int main() {
 
+	int nrElemente = 3;
+	struct Masina* vector = malloc(sizeof(struct Masina) * nrElemente);
+	vector[0] = initializare(1, 2010, "Marian", 2100, 'F');
+	vector[1] = initializare(2, 2008, "Cristi", 3500.6, 'A');
+	vector[2] = initializare(3, 2017, "Stefan", 750, 'M');
+
+	/*for (int i = 0; i < nrElemente; i++)
+	{
+		afisare(vector[i]);
+	}*/
+
+	afisareVector(vector, nrElemente);
+
+	free(vector);
 	return 0;
 }
