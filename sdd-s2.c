@@ -39,14 +39,32 @@ void afisareVector(struct Masina* vector, int nrElemente) {
 }
 
 struct Masina* copiazaPrimeleNElemente(struct Masina* vector, int nrElemente, int nrElementeCopiate) {
-	//copiem intr-un vector nou pe care il vom returna primele nrElementeCopiate
-	struct Masina *vectorNou=NULL;
+	struct Masina* vectorNou = NULL;
+	if (vector != NULL && nrElemente > 0 && nrElemente >= nrElementeCopiate && nrElementeCopiate > 0)
+	{
+		vectorNou = malloc(sizeof(struct Masina) * nrElementeCopiate);
 
-	return vectorNou;
+		for (int i = 0; i < nrElementeCopiate; i++)
+		{
+			vectorNou[i] = initializare(vector[i].id, vector[i].anFabricatie, vector[i].sofer, vector[i].kilometriiParcursi, 
+				vector[i].initialaProducator);
+		}
+
+		return vectorNou;
+	}	
 }
 
 void dezalocare(struct Masina** vector, int* nrElemente) {
-	//dezalocam elementele din vector si vectorul
+	if ((*vector) != NULL && (*nrElemente) > 0)
+	{
+		for (int i = 0; i < (*nrElemente); i++)
+		{
+			free((*vector)[i].sofer);
+		}
+		free(*vector);
+		(*vector) = NULL;
+		(*nrElemente) = 0;
+	}
 }
 
 void copiazaAnumiteElemente(struct Masina* vector, char nrElemente, float prag, struct Masina** vectorNou, int* dimensiune) {
@@ -81,6 +99,12 @@ int main() {
 
 	afisareVector(vector, nrElemente);
 
-	free(vector);
+	printf("\nMasini copiate:\n");
+	struct Masina* vectorNou = copiazaPrimeleNElemente(vector, nrElemente, nrElemente - 1);
+	int nrElementeCopiate = nrElemente - 1;
+	afisareVector(vectorNou, nrElementeCopiate);
+
+	dezalocare(&vectorNou, &nrElementeCopiate);
+
 	return 0;
 }
