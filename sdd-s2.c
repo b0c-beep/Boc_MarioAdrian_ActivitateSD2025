@@ -67,10 +67,31 @@ void dezalocare(struct Masina** vector, int* nrElemente) {
 	}
 }
 
-void copiazaAnumiteElemente(struct Masina* vector, char nrElemente, float prag, struct Masina** vectorNou, int* dimensiune) {
-	//parametrul prag poate fi modificat in functie de 
-	// tipul atributului ales pentru a indeplini o conditie
-	//este creat un nou vector cu elementele care indeplinesc acea conditie
+void copiazaMasiniCuMultiKilometri(struct Masina* vector, char nrElemente, float prag, struct Masina** vectorNou, int* dimensiune) {
+	if (vector != NULL && nrElemente > 0)
+	{
+		*dimensiune = 0;
+		for (int i = 0; i < nrElemente; i++)
+		{
+			if (vector[i].kilometriiParcursi > prag)
+			{
+				(*dimensiune)++;
+			}
+		}
+
+		(*vectorNou) = malloc(sizeof(struct Masina) * (*dimensiune));
+		int k = 0;
+		for (int i = 0; i < nrElemente; i++)
+		{
+			if (vector[i].kilometriiParcursi > prag)
+			{
+				(*vectorNou)[k] = vector[i];
+				(*vectorNou)[k].sofer = malloc(sizeof(char) * (strlen(vector[i].sofer) + 1));
+				strcpy_s((*vectorNou)[k].sofer, strlen(vector[i].sofer) + 1, vector[i].sofer);
+				k++;
+			}
+		}
+	}
 }
 
 struct Masina getPrimulElementConditionat(struct Masina* vector, int nrElemente, const char* conditie) {
@@ -89,8 +110,8 @@ int main() {
 	int nrElemente = 3;
 	struct Masina* vector = malloc(sizeof(struct Masina) * nrElemente);
 	vector[0] = initializare(1, 2010, "Marian", 2100, 'F');
-	vector[1] = initializare(2, 2008, "Cristi", 3500.6, 'A');
-	vector[2] = initializare(3, 2017, "Stefan", 750, 'M');
+	vector[1] = initializare(2, 2008, "Cristi", 1500.6, 'A');
+	vector[2] = initializare(3, 2017, "Stefan", 7500, 'M');
 
 	/*for (int i = 0; i < nrElemente; i++)
 	{
@@ -102,6 +123,13 @@ int main() {
 	printf("\nMasini copiate:\n");
 	struct Masina* vectorNou = copiazaPrimeleNElemente(vector, nrElemente, nrElemente - 1);
 	int nrElementeCopiate = nrElemente - 1;
+	afisareVector(vectorNou, nrElementeCopiate);
+
+	dezalocare(&vectorNou, &nrElementeCopiate);
+
+	float prag = 2000;
+	printf("\nMasini cu kilometrii multi:\n");
+	copiazaMasiniCuMultiKilometri(vector, nrElemente, prag, &vectorNou, &nrElementeCopiate);
 	afisareVector(vectorNou, nrElementeCopiate);
 
 	dezalocare(&vectorNou, &nrElementeCopiate);
