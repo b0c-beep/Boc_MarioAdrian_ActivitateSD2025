@@ -13,8 +13,15 @@ struct Masina initializare(int id, int anFabricatie, const char* sofer, float ki
 	struct Masina m;
 	m.id = id;
 	m.anFabricatie = anFabricatie;
-	m.sofer = (char*)malloc(strlen(sofer) + 1);
-	strcpy_s(m.sofer, strlen(sofer) + 1, sofer);
+	if (sofer != NULL)
+	{
+		m.sofer = (char*)malloc(strlen(sofer) + 1);
+		strcpy_s(m.sofer, strlen(sofer) + 1, sofer);
+	}
+	else
+	{
+		m.sofer = NULL;
+	}
 	m.kilometriiParcursi = kilometriiParcursi;
 	m.initialaProducator = initialaProducator;
 	return m;
@@ -141,5 +148,6 @@ int main() {
 	struct Masina m1 = getPrimaMasinaDupaSofer(vector, nrElemente, "Marian");
 	afisare(m1);
 
+	dezalocare(&vector, &nrElemente);
 	return 0;
 }
