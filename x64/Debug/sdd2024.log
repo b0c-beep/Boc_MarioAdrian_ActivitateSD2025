@@ -2,6 +2,7 @@
   sdd-s2.c
 D:\MVS\sdd2025\sdd2024\sdd-s2.c(16,26): warning C4013: 'strlen' undefined; assuming extern returning int
 D:\MVS\sdd2025\sdd2024\sdd-s2.c(17,2): warning C4013: 'strcpy_s' undefined; assuming extern returning int
-D:\MVS\sdd2025\sdd2024\sdd-s2.c(113,52): warning C4305: 'function': truncation from 'double' to 'float'
+D:\MVS\sdd2025\sdd2024\sdd-s2.c(100,7): warning C4013: 'strcmp' undefined; assuming extern returning int
+D:\MVS\sdd2025\sdd2024\sdd-s2.c(116,52): warning C4305: 'function': truncation from 'double' to 'float'
 D:\MVS\sdd2025\sdd2024\sdd-s2.c(55): warning C4715: 'copiazaPrimeleNElemente': not all control paths return a value
   sdd2024.vcxproj -> D:\MVS\sdd2025\x64\Debug\sdd2025.exe
