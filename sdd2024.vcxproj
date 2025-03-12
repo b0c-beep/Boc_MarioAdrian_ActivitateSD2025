@@ -27,6 +27,9 @@
     </ClCompile>
     <ClCompile Include="sdd-s3.c" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="masini.txt" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
