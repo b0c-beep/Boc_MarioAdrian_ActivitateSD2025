@@ -38,10 +38,32 @@ void afisare_obiect(Baterie b)
 	printf("initialaCuloare = %c\n", b.initalaCuloare);
 }
 
+float calculPretMAH(Baterie b)
+{
+	return (float)(b.pret / b.mAh);
+}
+
+void modificare_producator(Baterie* b, const char* producator)
+{
+	if (producator != NULL)
+	{
+		(*b).producator = (char*)malloc(strlen(producator) + 1);
+		strcpy_s((*b).producator, strlen(producator) + 1, producator);
+	}
+	else
+	{
+		printf("Parametru invalid");
+	}
+}
+
 int main()
 {
 	Baterie b1;
 	b1 = initializare_tastatura();
+	afisare_obiect(b1);
+	float pretPerMAH = calculPretMAH(b1);
+	printf("\n%.5f\n", pretPerMAH);
+	modificare_producator(&b1, "Anker2");
 	afisare_obiect(b1);
 	return 0;
 }
