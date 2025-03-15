@@ -30,11 +30,18 @@ Baterie initializare_tastatura()
 	return nou;
 }
 
-
+void afisare_obiect(Baterie b)
+{
+	printf("\nmAh = %d\n", b.mAh);
+	printf("pret = %.2f\n", b.pret);
+	printf("producator = %s\n", b.producator);
+	printf("initialaCuloare = %c\n", b.initalaCuloare);
+}
 
 int main()
 {
 	Baterie b1;
 	b1 = initializare_tastatura();
+	afisare_obiect(b1);
 	return 0;
 }
