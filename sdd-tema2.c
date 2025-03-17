@@ -40,7 +40,7 @@ void afisare_obiect(Baterie b)
 
 void afisare_vector(Baterie* vb, int numarObiecte)
 {
-	printf("\nAfisare vector:\n");
+	printf("\nAfisare vector:");
 	for (int i = 0; i < numarObiecte; i++)
 	{
 		afisare_obiect(vb[i]);
@@ -65,6 +65,41 @@ void modificare_producator(Baterie* b, const char* producator)
 	}
 }
 
+Baterie* getVectorBateriiNegre(Baterie* vector, int nrObiecte, int* nrObiectVectorNou)
+{
+	*nrObiectVectorNou = 0;
+	for (int i = 0; i < nrObiecte; i++)
+	{
+		if (vector[i].initalaCuloare == 'N' || vector[i].initalaCuloare == 'n')
+		{
+			(*nrObiectVectorNou)++;
+		}
+	}
+	Baterie* nou = malloc(sizeof(Baterie) * (*nrObiectVectorNou));
+	
+	int k = 0;
+	for (int i = 0; i < nrObiecte; i++)
+	{
+		if (vector[i].initalaCuloare == 'N' || vector[i].initalaCuloare == 'n')
+		{
+			nou[k].mAh = vector[i].mAh;
+			nou[k].pret = vector[i].pret;
+			nou[k].initalaCuloare = vector[i].initalaCuloare;
+			if (vector[i].producator != NULL)
+			{
+				nou[k].producator = (char*)malloc(strlen(vector[i].producator) + 1);
+				strcpy_s(nou[k].producator, strlen(vector[i].producator) + 1, vector[i].producator);
+				k++;
+			}
+			else {
+				nou[k].producator = NULL;
+			}
+		}
+	}
+
+	return nou;
+}
+
 int main()
 {
 	Baterie b1, b2, b3, b4, b5;
@@ -82,6 +117,10 @@ int main()
 	vb[3] = b4;
 	vb[4] = b5;
 	afisare_vector(vb, nrObiecte);
+	Baterie* nou;
+	int nrObiecteNou;
+	nou = getVectorBateriiNegre(vb, nrObiecte, &nrObiecteNou);
+	afisare_vector(nou, nrObiecteNou);
 
 	return 0;
 }
