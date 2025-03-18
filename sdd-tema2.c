@@ -40,10 +40,16 @@ void afisare_obiect(Baterie b)
 
 void afisare_vector(Baterie* vb, int numarObiecte)
 {
-	printf("\nAfisare vector:");
-	for (int i = 0; i < numarObiecte; i++)
+	if (vb != NULL)
 	{
-		afisare_obiect(vb[i]);
+		printf("\nAfisare vector:");
+		for (int i = 0; i < numarObiecte; i++)
+		{
+			afisare_obiect(vb[i]);
+		}
+	}
+	else {
+		printf("vector null\n");
 	}
 }
 
@@ -100,6 +106,119 @@ Baterie* getVectorBateriiNegre(Baterie* vector, int nrObiecte, int* nrObiectVect
 	return nou;
 }
 
+void mutaBateriiCapacitateMare(Baterie** v1, int* nrObiecte1, Baterie** v2, int* nrObiecte2)
+{
+	int k = 0;
+	for (int i = 0; i < (*nrObiecte1); i++)
+	{
+		if ((*v1)[i].mAh >= 10000)
+		{
+			k++;
+		}
+	}
+	(*nrObiecte2) = k;
+	*v2 = malloc(sizeof(Baterie) * (*nrObiecte2));
+	Baterie* copie = malloc(sizeof(Baterie) * ((*nrObiecte1) - (*nrObiecte2)));
+	
+	k = 0;
+	int j = 0;
+	for (int i = 0; i < (*nrObiecte1); i++)
+	{
+		if ((*v1)[i].mAh >= 10000)
+		{
+			(*v2)[k].mAh = (*v1)[i].mAh;
+			(*v2)[k].pret = (*v1)[i].pret;
+			(*v2)[k].initalaCuloare = (*v1)[i].initalaCuloare;
+			if ((*v1)[i].producator != NULL)
+			{
+				(*v2)[k].producator = (char*)malloc(strlen((*v1)[i].producator) + 1);
+				strcpy_s((*v2)[k].producator, strlen((*v1)[i].producator) + 1, (*v1)[i].producator);
+			}
+			else
+			{
+				(*v2)[k].producator = NULL;
+			}
+			k++;
+		}
+		else
+		{
+			copie[j].mAh = (*v1)[i].mAh;
+			copie[j].pret = (*v1)[i].pret;
+			copie[j].initalaCuloare = (*v1)[i].initalaCuloare;
+			if ((*v1)[i].producator != NULL)
+			{
+				copie[j].producator = (char*)malloc(strlen((*v1)[i].producator) + 1);
+				strcpy_s(copie[j].producator, strlen((*v1)[i].producator) + 1, (*v1)[i].producator);
+			}
+			else {
+				copie[j].producator = NULL;
+			}
+			j++;
+		}
+	}
+	
+	(*nrObiecte1) = j;
+	*v1 = malloc(sizeof(Baterie) * (*nrObiecte1));
+
+	for (int i = 0; i < (*nrObiecte1); i++)
+	{
+		(*v1)[i].mAh = copie[i].mAh;
+		(*v1)[i].pret = copie[i].pret;
+		(*v1)[i].initalaCuloare = copie[i].initalaCuloare;
+		if (copie[i].producator != NULL)
+		{
+			(*v1)[i].producator = (char*)malloc(strlen(copie[i].producator) + 1);
+			strcpy_s((*v1)[i].producator, strlen(copie[i].producator) + 1, copie[i].producator);
+		}
+		else
+		{
+			(*v1)[i].producator = NULL;
+		}
+	}
+
+	free(copie);
+
+}
+
+Baterie* concatenare(Baterie* b1, int nrOb1, Baterie* b2, int nrOb2)
+{
+	Baterie* concat = malloc(sizeof(Baterie) * (nrOb1 + nrOb2));
+	int k = 0;
+	for (int i = 0; i < nrOb1; i++) {
+		concat[k].mAh = b1[i].mAh;
+		concat[k].pret = b1[i].pret;
+		concat[k].initalaCuloare = b1[i].initalaCuloare;
+		if (b1[i].producator != NULL)
+		{
+			concat[k].producator = (char*)malloc(strlen(b1[i].producator) + 1);
+			strcpy_s(concat[k].producator, strlen(b1[i].producator) + 1, b1[i].producator);
+		}
+		else {
+			concat[k].producator = NULL;
+		}
+
+		k++;
+	}
+
+	for (int i = 0; i < nrOb2; i++) {
+		concat[k].mAh = b2[i].mAh;
+		concat[k].pret = b2[i].pret;
+		concat[k].initalaCuloare = b2[i].initalaCuloare;
+		if (b2[i].producator != NULL)
+		{
+			concat[k].producator = (char*)malloc(strlen(b2[i].producator) + 1);
+			strcpy_s(concat[k].producator, strlen(b2[i].producator) + 1, b2[i].producator);
+		}
+		else {
+			concat[k].producator = NULL;
+		}
+
+		k++;
+	}
+
+	return concat;
+}
+
 int main()
 {
 	Baterie b1, b2, b3, b4, b5;
@@ -116,11 +235,20 @@ int main()
 	vb[2] = b3;
 	vb[3] = b4;
 	vb[4] = b5;
-	afisare_vector(vb, nrObiecte);
+	//afisare_vector(vb, nrObiecte);
 	Baterie* nou;
 	int nrObiecteNou;
 	nou = getVectorBateriiNegre(vb, nrObiecte, &nrObiecteNou);
-	afisare_vector(nou, nrObiecteNou);
+	//afisare_vector(nou, nrObiecteNou);
+	Baterie* nou2 = NULL;
+	int nrObiecteNou2;
+	mutaBateriiCapacitateMare(&vb, &nrObiecte, &nou2, &nrObiecteNou2);
+	//afisare_vector(vb, nrObiecte);
+	printf("\n");
+	//afisare_vector(nou2, nrObiecteNou2);
 
+	int nrConc = nrObiecte + nrObiecteNou2;
+	Baterie* conc = concatenare(vb, nrObiecte, nou2, nrObiecteNou2);
+	afisare_vector(conc, nrConc);
 	return 0;
 }
