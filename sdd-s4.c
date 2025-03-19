@@ -3,9 +3,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-//trebuie sa folositi fisierul masini.txt
-//sau va creati un alt fisier cu alte date
-
 struct StructuraMasina {
 	int id;
 	int nrUsi;
@@ -16,7 +13,12 @@ struct StructuraMasina {
 };
 typedef struct StructuraMasina Masina;
 
-//creare structura pentru un nod dintr-o lista simplu inlantuita
+struct Nod
+{
+	Masina info;
+	Nod* next;
+};
+typedef struct Nod Nod;
 
 Masina citireMasinaDinFisier(FILE* file) {
 	char buffer[100];
@@ -49,9 +51,12 @@ void afisareMasina(Masina masina) {
 	printf("Serie: %c\n\n", masina.serie);
 }
 
-void afisareListaMasini(/*lista de masini*/) {
-	//afiseaza toate elemente de tip masina din lista simplu inlantuita
-	//prin apelarea functiei afisareMasina()
+void afisareListaMasini(Nod* nod) {
+	while (nod)
+	{
+		afisareMasina(nod->info);
+		nod = nod->next;
+	}
 }
 
 void adaugaMasinaInLista(/*lista de masini*/ Masina masinaNoua) {
