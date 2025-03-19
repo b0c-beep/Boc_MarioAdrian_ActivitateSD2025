@@ -59,8 +59,24 @@ void afisareListaMasini(Nod* nod) {
 	}
 }
 
-void adaugaMasinaInLista(/*lista de masini*/ Masina masinaNoua) {
-	//adauga la final in lista primita o noua masina pe care o primim ca parametru
+void adaugaMasinaInLista(Nod** nod, Masina masinaNoua) {
+	Nod* nou = (Nod*)malloc(sizeof(Nod));
+	nou->info = masinaNoua;
+	nou->next = NULL;
+
+	if (*nod != NULL)
+	{
+		Nod* aux = (*nod);
+		while (aux->next != NULL)
+		{
+			aux = aux->next;
+		}
+		aux->next = nou;
+	}
+	else 
+	{
+		(*nod) = nou;
+	}
 }
 
 void adaugaLaInceputInLista(/*lista de masini*/ Masina masinaNoua) {
