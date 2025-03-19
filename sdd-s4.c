@@ -16,7 +16,7 @@ typedef struct StructuraMasina Masina;
 struct Nod
 {
 	Masina info;
-	Nod* next;
+	struct Nod* next;
 };
 typedef struct Nod Nod;
 
@@ -118,7 +118,8 @@ float calculeazaPretulMasinilorUnuiSofer(/*lista masini*/ const char* numeSofer)
 }
 
 int main() {
-
-
+	Nod* nod;
+	nod = citireListaMasiniDinFisier("masini.txt");
+	afisareListaMasini(nod);
 	return 0;
 }
