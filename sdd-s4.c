@@ -128,9 +128,21 @@ void stergeMasiniDinSeria(/*lista masini*/ char serieCautata) {
 	//tratati situatia ca masina se afla si pe prima pozitie, si pe ultima pozitie
 }
 
-float calculeazaPretulMasinilorUnuiSofer(/*lista masini*/ const char* numeSofer) {
-	//calculeaza pretul tuturor masinilor unui sofer.
-	return 0;
+float calculeazaPretulMasinilorUnuiSofer(Nod* lista, const char* numeSofer) {
+	int k = 0;
+	float suma = 0;
+
+	while (lista)
+	{
+		if (strcmp(lista->info.numeSofer, numeSofer) == 0)
+		{
+			k++;
+			suma += lista->info.pret;
+		}
+		lista = lista->next;
+	}
+
+	return k == 0 ? 0 : (suma / k);
 }
 
 int main() {
@@ -139,8 +151,8 @@ int main() {
 	afisareListaMasini(nod);
 	float medie = calculeazaPretMediu(nod);
 	printf("Medie: %.2f\n", medie);
-
-
+	float medieGigel = calculeazaPretulMasinilorUnuiSofer(nod, "Gigel");
+	printf("Medie Gigel: %.2f\n", medieGigel);
 
 	dezalocareListaMasini(&nod);
 	return 0;
