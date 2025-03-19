@@ -1,11 +1,5 @@
 ﻿C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(531,5): warning MSB8028: The intermediate directory (x64\Debug\) contains files shared from another project (sdd2024.vcxproj).  This can lead to incorrect clean and rebuild behavior.
-  sdd-tema3.c
-D:\MVS\sdd2025\sdd2024\sdd-tema3.c(24,33): warning C4013: 'strlen' undefined; assuming extern returning int
-D:\MVS\sdd2025\sdd2024\sdd-tema3.c(25,2): warning C4013: 'strcpy_s' undefined; assuming extern returning int
-D:\MVS\sdd2025\sdd2024\sdd-tema3.c(243,13): warning C4013: 'strtok' undefined; assuming extern returning int
-D:\MVS\sdd2025\sdd2024\sdd-tema3.c(245,5): warning C4047: '=': 'char *' differs in levels of indirection from 'int'
-D:\MVS\sdd2025\sdd2024\sdd-tema3.c(246,24): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-D:\MVS\sdd2025\sdd2024\sdd-tema3.c(247,5): warning C4047: '=': 'char *' differs in levels of indirection from 'int'
-D:\MVS\sdd2025\sdd2024\sdd-tema3.c(250,5): warning C4047: '=': 'char *' differs in levels of indirection from 'int'
-D:\MVS\sdd2025\sdd2024\sdd-tema3.c(243,9): warning C4047: 'initializing': 'char *' differs in levels of indirection from 'int'
+  sdd-s4.c
+D:\MVS\sdd2025\sdd2024\sdd-s4.c(30,12): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+D:\MVS\sdd2025\sdd2024\sdd-s4.c(69): warning C4716: 'citireListaMasiniDinFisier': must return a value
   sdd2024.vcxproj -> D:\MVS\sdd2025\x64\Debug\sdd2025.exe
