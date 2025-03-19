@@ -175,7 +175,6 @@ int main() {
 	printf("Medie Gigel: %.2f\n", medieGigel);
 	int usi = getNrUsiCeaMaiScumpa(nod);
 	printf("Numar usi cea mai scumpa masina: %d\n", usi);
-
 	dezalocareListaMasini(&nod);
 	return 0;
 }
