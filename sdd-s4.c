@@ -98,13 +98,29 @@ Nod* citireListaMasiniDinFisier(const char* numeFisier) {
 	return lista;
 }
 
-void dezalocareListaMasini(/*lista de masini*/) {
-	//sunt dezalocate toate masinile si lista de elemente
+void dezalocareListaMasini(Nod** lista) {
+	while ((*lista))
+	{
+		Nod* aux = (*lista);
+		free(aux->info.model);
+		free(aux->info.numeSofer);
+		(*lista) = (*lista)->next;
+		free(aux);
+	}
 }
 
-float calculeazaPretMediu(/*lista de masini*/) {
-	//calculeaza pretul mediu al masinilor din lista.
-	return 0;
+float calculeazaPretMediu(Nod* lista) {
+	int k = 0;
+	float suma = 0;
+
+	while (lista)
+	{
+		k++;
+		suma += lista->info.pret;
+		lista = lista->next;
+	}
+
+	return k == 0 ? 0 : (suma / k);
 }
 
 void stergeMasiniDinSeria(/*lista masini*/ char serieCautata) {
@@ -121,5 +137,11 @@ int main() {
 	Nod* nod;
 	nod = citireListaMasiniDinFisier("masini.txt");
 	afisareListaMasini(nod);
+	float medie = calculeazaPretMediu(nod);
+	printf("Medie: %.2f\n", medie);
+
+
+
+	dezalocareListaMasini(&nod);
 	return 0;
 }
