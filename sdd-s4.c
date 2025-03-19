@@ -83,7 +83,7 @@ void adaugaLaInceputInLista(/*lista de masini*/ Masina masinaNoua) {
 	//adauga la inceputul listei o noua masina pe care o primim ca parametru
 }
 
-void* citireListaMasiniDinFisier(const char* numeFisier) {
+Nod* citireListaMasiniDinFisier(const char* numeFisier) {
 	FILE* f = fopen(numeFisier, "r");
 	Nod* lista = NULL;
 
@@ -94,6 +94,8 @@ void* citireListaMasiniDinFisier(const char* numeFisier) {
 	}
 
 	fclose(f);
+
+	return lista;
 }
 
 void dezalocareListaMasini(/*lista de masini*/) {
