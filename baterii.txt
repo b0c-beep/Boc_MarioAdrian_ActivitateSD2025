@@ -1,0 +1,10 @@
+12000,420.25,Anker,A
+7500,280.9,Xiaomi,N
+5000,200,Samsung,N
+15000,580,Emag,N
+20000,700.5,Horizon,A
+22000,900,Anker,N
+12500,600,Amazon,A
+8000,310.8,Huawei,N
+14000,490.7,Emag,A
+3500,99.9,Aliexpress,N

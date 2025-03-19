@@ -30,8 +30,12 @@
     <ClCompile Include="sdd-tema2.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="sdd-tema3.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="masini.txt" />
+    <Text Include="baterii.txt" />
   </ItemGroup>
 </Project>
