@@ -145,6 +145,26 @@ float calculeazaPretulMasinilorUnuiSofer(Nod* lista, const char* numeSofer) {
 	return k == 0 ? 0 : (suma / k);
 }
 
+int getNrUsiCeaMaiScumpa(Nod* lista)
+{
+	int k = 0;
+	int usi = 0;
+	int maxi = 0;
+
+	while (lista)
+	{
+		k++;
+		if (lista->info.pret > maxi)
+		{
+			maxi = lista->info.pret;
+			usi = lista->info.nrUsi;
+		}
+		lista = lista->next;
+	}
+
+	return k == 0 ? 0 : usi;
+}
+
 int main() {
 	Nod* nod;
 	nod = citireListaMasiniDinFisier("masini.txt");
@@ -153,6 +173,8 @@ int main() {
 	printf("Medie: %.2f\n", medie);
 	float medieGigel = calculeazaPretulMasinilorUnuiSofer(nod, "Gigel");
 	printf("Medie Gigel: %.2f\n", medieGigel);
+	int usi = getNrUsiCeaMaiScumpa(nod);
+	printf("Numar usi cea mai scumpa masina: %d\n", usi);
 
 	dezalocareListaMasini(&nod);
 	return 0;
