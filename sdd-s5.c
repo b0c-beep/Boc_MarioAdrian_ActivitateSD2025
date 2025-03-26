@@ -232,6 +232,7 @@ int main() {
 
 	char* nume = getNumeSoferMasinaScumpa(ld);
 	printf("%s\n\n", nume);
+	free(nume);
 
 	dezalocareLDMasini(&ld);
 	return 0;
