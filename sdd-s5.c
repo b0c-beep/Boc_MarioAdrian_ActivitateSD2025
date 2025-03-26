@@ -120,7 +120,7 @@ Lista citireLDMasiniDinFisier(const char* numeFisier) {
 	while (!feof(f))
 	{
 		Masina masina = citireMasinaDinFisier(f);
-		adaugaLaInceputInLista(&ld, masina);
+		adaugaMasinaInLista(&ld, masina);
 	}
 
 	fclose(f);
@@ -159,12 +159,60 @@ float calculeazaPretMediu(Lista ld) {
 }
 
 void stergeMasinaDupaID(Lista* ld, int id) {
-	
+	Nod* nod = ld->inceput;
+	while (nod && nod->info.id != id)
+	{
+		nod = nod->next;
+	}
+	if (nod)
+	{
+		if (nod->prev)
+		{
+			nod->prev->next = nod->next;
+			if (nod->next)
+			{
+				nod->next->prev = nod->prev;
+			}
+			else
+			{
+				ld->final = nod->prev;
+			}
+		}
+		else
+		{
+			ld->inceput = nod->next;
+			if (nod->next)
+			{
+				nod->next->prev = NULL;
+			}
+			else
+			{
+				ld->final = NULL;
+			}
+		}
+		free(nod->info.model);
+		free(nod->info.numeSofer);
+		free(nod);
+	}
 }
 
-char* getNumeSoferMasinaScumpa(/*lista dublu inlantuita*/) {
-	//cauta masina cea mai scumpa si 
-	//returneaza numele soferului acestei maasini.
+char* getNumeSoferMasinaScumpa(Lista ld) {
+	Nod* nod = ld.inceput;
+	Nod* maxPretMasina = nod;
+	if (ld.inceput) {
+		while (nod)
+		{
+			if (nod->info.pret > maxPretMasina->info.pret)
+			{
+				maxPretMasina = nod;
+			}
+			nod = nod->next;
+		}
+
+		char* nume = (char*)malloc(strlen(maxPretMasina->info.numeSofer) + 1);
+		strcpy_s(nume, strlen(maxPretMasina->info.numeSofer) + 1, maxPretMasina->info.numeSofer);
+		return nume;
+	}
 	return NULL;
 }
 
@@ -178,6 +226,12 @@ int main() {
 
 	float pretMediu = calculeazaPretMediu(ld);
 	printf("%.2f\n", pretMediu);
+
+	stergeMasinaDupaID(&ld, 5);
+	afisareListaMasiniDeLaInceput(ld);
+
+	char* nume = getNumeSoferMasinaScumpa(ld);
+	printf("%s\n\n", nume);
 
 	dezalocareLDMasini(&ld);
 	return 0;
