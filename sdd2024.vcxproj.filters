@@ -36,6 +36,9 @@
     <ClCompile Include="sdd-s4.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="sdd-s5.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="masini.txt" />

@@ -3,8 +3,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-//trebuie sa folositi fisierul masini.txt
-//sau va creati un alt fisier cu alte date
 
 struct StructuraMasina {
 	int id;
@@ -16,9 +14,20 @@ struct StructuraMasina {
 };
 typedef struct StructuraMasina Masina;
 
-//creare structura pentru un nod dintr-o lista dublu inlantuita
+struct Nod
+{
+	Masina info;
+	struct Nod* next;
+	struct Nod* prev;
+};
+typedef struct Nod Nod;
 
-//creare structura pentru Lista Dubla 
+struct ListaDubla
+{
+	Nod* inceput;
+	Nod* final;
+};
+typedef struct ListaDubla Lista;
 
 Masina citireMasinaDinFisier(FILE* file) {
 	char buffer[100];
@@ -51,13 +60,25 @@ void afisareMasina(Masina masina) {
 	printf("Serie: %c\n\n", masina.serie);
 }
 
-void afisareListaMasini(/*lista dubla de masini*/) {
-	//afiseaza toate elemente de tip masina din lista dublu inlantuita
-	//prin apelarea functiei afisareMasina()
+void afisareListaMasiniDeLaInceput(Lista list) {
+	Nod* nod = list.inceput;
+	while (nod)
+	{
+		afisareMasina(nod->info);
+		nod = nod->next;
+	}
 }
 
-void adaugaMasinaInLista(/*lista dubla de masini*/ Masina masinaNoua) {
-	//adauga la final in lista primita o noua masina pe care o primim ca parametru
+void adaugaMasinaInLista(Lista* list, Masina masinaNoua) {
+	Nod* nod = (Nod*)malloc(sizeof(Nod));
+	nod->info = masinaNoua;
+	nod->next = NULL;
+	nod->prev = list->final;
+
+	if (list->final != NULL)
+	{
+		list->final = nod;
+	}
 }
 
 void adaugaLaInceputInLista(/*lista dubla de masini*/ Masina masinaNoua) {
@@ -92,6 +113,6 @@ char* getNumeSoferMasinaScumpa(/*lista dublu inlantuita*/) {
 
 int main() {
 
-
+	
 	return 0;
 }
