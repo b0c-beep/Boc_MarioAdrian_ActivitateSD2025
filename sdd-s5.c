@@ -69,6 +69,15 @@ void afisareListaMasiniDeLaInceput(Lista list) {
 	}
 }
 
+void afisareListaMasiniDeLaFinal(Lista list) {
+	Nod* nod = list.final;
+	while (nod)
+	{
+		afisareMasina(nod->info);
+		nod = nod->prev;
+	}
+}
+
 void adaugaMasinaInLista(Lista* list, Masina masinaNoua) {
 	Nod* nod = (Nod*)malloc(sizeof(Nod));
 	nod->info = masinaNoua;
@@ -77,32 +86,80 @@ void adaugaMasinaInLista(Lista* list, Masina masinaNoua) {
 
 	if (list->final != NULL)
 	{
+		list->final->next = nod;
+	}
+	else {
+		list->inceput = nod;
+	}
+	list->final = nod;
+}
+
+void adaugaLaInceputInLista(Lista* list, Masina masinaNoua) {
+	Nod* nod = (Nod*)malloc(sizeof(Nod));
+	nod->info = masinaNoua;
+	nod->next = list->inceput;
+	nod->prev = NULL;
+	
+	if (list->inceput)
+	{
+		list->inceput->prev = nod;
+	}
+	else {
 		list->final = nod;
 	}
+	list->inceput = nod;
+
 }
 
-void adaugaLaInceputInLista(/*lista dubla de masini*/ Masina masinaNoua) {
-	//adauga la inceputul listei dublu inlantuite o noua masina pe care o primim ca parametru
+Lista citireLDMasiniDinFisier(const char* numeFisier) {
+	FILE* f = fopen(numeFisier, "r");
+	Lista ld;
+	ld.inceput = NULL;
+	ld.final = NULL;
+
+	while (!feof(f))
+	{
+		Masina masina = citireMasinaDinFisier(f);
+		adaugaLaInceputInLista(&ld, masina);
+	}
+
+	fclose(f);
+	return ld;
 }
 
-void* citireLDMasiniDinFisier(const char* numeFisier) {
-	//functia primeste numele fisierului, il deschide si citeste toate masinile din fisier
-	//prin apelul repetat al functiei citireMasinaDinFisier()
-	//ATENTIE - la final inchidem fisierul/stream-ul
+void dezalocareLDMasini(Lista* ld){
+	while (ld->inceput)
+	{
+		if (ld->inceput->info.numeSofer)
+		{
+			free(ld->inceput->info.numeSofer);
+		}
+		if (ld->inceput->info.model)
+		{
+			free(ld->inceput->info.model);
+		}
+		Nod* p = ld->inceput;
+		ld->inceput = p->next;
+		free(p);
+	}
+	ld->final = NULL;
 }
 
-void dezalocareLDMasini(/*lista dubla de masini*/) {
-	//sunt dezalocate toate masinile si lista dublu inlantuita de elemente
+float calculeazaPretMediu(Lista ld) {
+	float suma = 0;
+	int k = 0;
+	Nod* nod = ld.inceput;
+	while (nod)
+	{
+		suma += nod->info.pret;
+		k++;
+		nod = nod->next;
+	}
+	return k > 0 ? suma / k : 0;
 }
 
-float calculeazaPretMediu(/*lista de masini*/) {
-	//calculeaza pretul mediu al masinilor din lista.
-	return 0;
-}
-
-void stergeMasinaDupaID(/*lista masini*/ int id) {
-	//sterge masina cu id-ul primit.
-	//tratati situatia ca masina se afla si pe prima pozitie, si pe ultima pozitie
+void stergeMasinaDupaID(Lista* ld, int id) {
+	
 }
 
 char* getNumeSoferMasinaScumpa(/*lista dublu inlantuita*/) {
@@ -112,7 +169,16 @@ char* getNumeSoferMasinaScumpa(/*lista dublu inlantuita*/) {
 }
 
 int main() {
+	Lista ld;
+	ld = citireLDMasiniDinFisier("masini.txt");
+	afisareListaMasiniDeLaInceput(ld);
+	printf("\n\n");
+	afisareListaMasiniDeLaFinal(ld);
+	printf("\n\n");
 
-	
+	float pretMediu = calculeazaPretMediu(ld);
+	printf("%.2f\n", pretMediu);
+
+	dezalocareLDMasini(&ld);
 	return 0;
 }

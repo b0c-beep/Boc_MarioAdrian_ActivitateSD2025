@@ -41,7 +41,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="masini.txt" />
     <Text Include="baterii.txt" />
+    <Text Include="masini.txt" />
   </ItemGroup>
 </Project>
