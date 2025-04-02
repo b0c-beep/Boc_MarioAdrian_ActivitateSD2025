@@ -70,7 +70,7 @@ void adaugaMasinaInLista(Nod** lista, Masina masinaNoua) {
 	nou->next = NULL;
 	if (*lista != NULL)
 	{
-		Nod* aux = &lista;
+		Nod* aux = *lista;
 		while (aux->next != NULL)
 		{
 			aux = aux->next;
@@ -104,16 +104,35 @@ int calculeazaHash(char cheie, int dimensiune) {
 	return 0;
 }
 
-void inserareMasinaInTabela(HashTable hash, Masina galerie) {
-	//este folosit mecanismul CHAINING
-	//este determinata pozitia si se realizeaza inserarea pe pozitia respectiva
+void inserareMasinaInTabela(HashTable hash, Masina masina) {
+	int pozitie = calculeazaHash(masina.serie, hash.dim);
+	if (pozitie < hash.dim)
+	{
+		if (hash.vector[pozitie] != NULL) //coliziune
+		{
+			adaugaMasinaInLista(&(hash.vector[pozitie]), masina);
+		}
+		else //merge si fara if else pentru ca tratam cazul in adaugamasinainlista
+		{
+			hash.vector[pozitie] = (Nod*)malloc(sizeof(Nod));
+			hash.vector[pozitie]->info = masina;
+			hash.vector[pozitie]->next = NULL;
+		}
+	}
 }
 
-HashTable citireMasiniDinFisier(const char* numeFisier) {
-	//functia primeste numele fisierului, il deschide si citeste toate masinile din fisier
-	//prin apelul repetat al functiei citireMasinaDinFisier()
-	// aceste masini sunt inserate intr-o tabela de dispersie initializata aici
-	//ATENTIE - la final inchidem fisierul/stream-ul
+HashTable citireMasiniDinFisier(const char* numeFisier, int dimensiune) {
+	HashTable ht = initializareHashTable(dimensiune);
+	FILE* f = fopen(numeFisier, "r");
+
+	while (!feof(f))
+	{
+		Masina m = citireMasinaDinFisier(f);
+		inserareMasinaInTabela(ht, m);
+	}
+
+	fclose(f);
+	return ht;
 }
 
 void afisareTabelaDeMasini(HashTable ht) {
@@ -139,7 +158,8 @@ Masina getMasinaDupaCheie(HashTable ht /*valoarea pentru masina cautata*/) {
 }
 
 int main() {
-
-
+	HashTable ht;
+	ht = citireMasiniDinFisier("masini.txt", 7);
+	afisareTabelaDeMasini(ht);
 	return 0;
 }
