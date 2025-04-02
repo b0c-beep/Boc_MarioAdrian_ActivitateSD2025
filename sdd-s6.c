@@ -136,7 +136,12 @@ HashTable citireMasiniDinFisier(const char* numeFisier, int dimensiune) {
 }
 
 void afisareTabelaDeMasini(HashTable ht) {
-	//sunt afisate toate masinile cu evidentierea clusterelor realizate
+	for (int i = 0; i < ht.dim; i++)
+	{
+		printf("Cluster %d-----------------------------------------------\n", i);
+		afisareListaMasini(ht.vector[i]);
+		printf("--------------------------------------------------------\n\n\n");
+	}
 }
 
 void dezalocareTabelaDeMasini(HashTable *ht) {
@@ -150,10 +155,25 @@ float* calculeazaPreturiMediiPerClustere(HashTable ht, int* nrClustere) {
 	return NULL;
 }
 
-Masina getMasinaDupaCheie(HashTable ht /*valoarea pentru masina cautata*/) {
+Masina getMasinaDupaCheie(HashTable ht, char cheie) {
 	Masina m;
-	//cauta masina dupa valoarea atributului cheie folosit in calcularea hash-ului
-	//trebuie sa modificam numele functiei 
+	m.id = -1;
+	int pozitie = calculeazaHash(cheie, ht.dim);
+	if (ht.vector[pozitie] != NULL)
+	{
+		Nod* p = ht.vector[pozitie];
+		while (p && p->info.serie != cheie)
+		{
+			p = p->next;
+		}
+		if (p) {
+			m = p->info;
+			m.model = (char*)malloc(strlen(p->info.model) + 1);
+			strcpy_s(m.model, strlen(p->info.model) + 1, p->info.model);
+			m.numeSofer = (char*)malloc(strlen(p->info.numeSofer) + 1);
+			strcpy_s(m.numeSofer, strlen(p->info.numeSofer) + 1, p->info.numeSofer);
+		}
+	}
 	return m;
 }
 
@@ -161,5 +181,17 @@ int main() {
 	HashTable ht;
 	ht = citireMasiniDinFisier("masini.txt", 7);
 	afisareTabelaDeMasini(ht);
+
+	Masina m;
+	printf("Masina cu seria: A\n");
+	m = getMasinaDupaCheie(ht, 'A');
+	if (m.id != -1)
+	{
+		afisareMasina(m);
+		free(m.model);
+		free(m.numeSofer);
+	}
+	
+	
 	return 0;
 }
