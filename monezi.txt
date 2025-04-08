@@ -1,0 +1,6 @@
+Romania,2,25.7,1998
+Franta,5,18.9,1879
+Germania,4,22.3,1956
+Danemarca,3,45,2001
+Slovenia,1,24.8,2005
+Afganistan,1,35.9,1990

@@ -51,6 +51,7 @@
   <ItemGroup>
     <Text Include="baterii.txt" />
     <Text Include="masini.txt" />
+    <Text Include="monezi.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

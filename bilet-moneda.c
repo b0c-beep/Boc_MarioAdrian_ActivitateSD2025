@@ -152,6 +152,36 @@ void dezalocareLista(Nod** lista)
 	}
 }
 
+Moneda citireMonedaDinFisier(FILE* f)
+{
+	Moneda m;
+	char buffer[100] = "";
+	char sep[3] = ",\n";
+	fgets(buffer, 100, f);
+	char* aux = strtok(buffer, sep);
+	m.taraEmitenta = (char*)malloc(strlen(aux) + 1);
+	strcpy_s(m.taraEmitenta, strlen(aux) + 1, aux);
+
+	m.valoareNominala = atoi(strtok(NULL, sep));
+	m.greutate = atof(strtok(NULL, sep));
+	m.anEmitere = atoi(strtok(NULL, sep));
+	return m;
+}
+
+Nod* cititreListaDinFisier(const char* numeFisier)
+{
+	FILE* f = fopen(numeFisier, "r");
+	Nod* lista = NULL;
+
+	while (!feof(f))
+	{
+		inserareMonedaInLista(&lista, citireMonedaDinFisier(f));
+	}
+
+	fclose(f);
+	return lista;
+}
+
 int main()
 {
 	Moneda m1 = initializare_moneda("Romania", 2, 25.7, 1998);
@@ -162,27 +192,30 @@ int main()
 	Moneda m6 = initializare_moneda("Afganistan", 1, 35.9, 1990);
 
 	Nod* lista = NULL;
-	inserareMonedaInLista(&lista, m1);
+	/*inserareMonedaInLista(&lista, m1);
 	inserareMonedaInLista(&lista, m2);
 	inserareMonedaInLista(&lista, m3);
 	inserareMonedaInLista(&lista, m4);
 	inserareMonedaInLista(&lista, m5);
-	inserareMonedaInLista(&lista, m6);
+	inserareMonedaInLista(&lista, m6);*/
+
+
+	lista = cititreListaDinFisier("monezi.txt");
 
 	afisareLista(lista);
 
-	Moneda monedaMax = getMonedaGreutateMaxima(lista);
+	//Moneda monedaMax = getMonedaGreutateMaxima(lista);
 
-	printf("\n\nMoneda cu greutate maxima:\n");
-	afisareMoneda(monedaMax);
+	//printf("\n\nMoneda cu greutate maxima:\n");
+	//afisareMoneda(monedaMax);
 
-	printf("\n\n");
+	//printf("\n\n");
 
-	stergeMonedaDinLista(&lista, 45);
+	//stergeMonedaDinLista(&lista, 45);
 
-	afisareLista(lista);
+	//afisareLista(lista);
 
-	free(monedaMax.taraEmitenta);
+	//free(monedaMax.taraEmitenta);
 	dezalocareLista(&lista);
 	return 0;
 }
