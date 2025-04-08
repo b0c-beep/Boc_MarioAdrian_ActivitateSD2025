@@ -42,6 +42,9 @@
     <ClCompile Include="sdd-s6.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="bilet-moneda.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="baterii.txt" />
