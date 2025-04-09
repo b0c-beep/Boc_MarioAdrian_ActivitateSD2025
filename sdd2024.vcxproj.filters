@@ -45,6 +45,9 @@
     <ClCompile Include="bilet-moneda.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="bilet-reteta.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="baterii.txt" />
