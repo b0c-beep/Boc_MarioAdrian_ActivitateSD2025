@@ -105,7 +105,13 @@ Heap citireHeapDeMasiniDinFisier(const char* numeFisier) {
 }
 
 void afisareHeap(Heap heap) {
-	//afiseaza elementele vizibile din heap
+	if (heap.vector)
+	{
+		for (int i = 0; i < heap.nrMasini; i++)
+		{
+			afisareMasina(heap.vector[i]);
+		}
+	}
 }
 
 void afiseazaHeapAscuns(Heap heap) {
@@ -123,7 +129,8 @@ void dezalocareHeap(Heap* heap) {
 }
 
 int main() {
-
+	Heap h = citireHeapDeMasiniDinFisier("masini-arbore.txt");
+	afisareHeap(h);
 
 	return 0;
 }
