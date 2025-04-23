@@ -20,6 +20,17 @@ struct Heap {
 };
 typedef struct Heap Heap;
 
+//o lista cu masinile din heap care au id-ul mai mare de o valoare primita ca parametru
+//masinile vor fi extrase din heap
+
+struct Nod {
+	Masina info;
+	struct Nod* next;
+};
+typedef struct Nod Nod;
+
+
+
 Masina citireMasinaDinFisier(FILE* file) {
 	char buffer[100];
 	char sep[3] = ",\n";
@@ -49,6 +60,19 @@ void afisareMasina(Masina masina) {
 	printf("Model: %s\n", masina.model);
 	printf("Nume sofer: %s\n", masina.numeSofer);
 	printf("Serie: %c\n\n", masina.serie);
+}
+
+void afisareLista(Nod* lista)
+{
+	if (lista)
+	{
+		Nod* p = lista;
+		while (p)
+		{
+			afisareMasina(p->info);
+			p = p->next;
+		}
+	}
 }
 
 Heap initializareHeap(int lungime) {
@@ -115,22 +139,98 @@ void afisareHeap(Heap heap) {
 }
 
 void afiseazaHeapAscuns(Heap heap) {
-	//afiseaza elementele ascunse din heap
+	if (heap.vector)
+	{
+		for (int i = heap.nrMasini; i < heap.lungime; i++)
+		{
+			afisareMasina(heap.vector[i]);
+		}
+	}
 }
 
-Masina extrageMasina(void* heap) {
-	//extrage si returneaza masina de pe prima pozitie
-	//elementul extras nu il stergem...doar il ascundem
+Masina extrageMasina(Heap* heap) {
+	if (heap->lungime > 0)
+	{
+		Masina aux = heap->vector[0];
+		heap->vector[0] = heap->vector[heap->nrMasini - 1];
+		heap->vector[heap->nrMasini - 1] = aux;
+		heap->nrMasini--;
+
+		for (int i = (heap->nrMasini - 2) / 2; i >= 0; i--)
+		{
+			filtreazaHeap(*heap, i);
+		}
+
+		return aux;
+	}
+	Masina m;
+	m.numeSofer = NULL;
+	m.model = NULL;
+	return m;
 }
 
 
 void dezalocareHeap(Heap* heap) {
-	//sterge toate elementele din Heap
+	for (int i = 0; i < heap->lungime; i++)
+	{
+		free(heap->vector[i].numeSofer);
+		free(heap->vector[i].model);
+	}
+	free(heap->vector);
+	heap->lungime = 0;
+	heap->nrMasini = 0;
+	heap->vector = NULL;
+}
+
+void inserareInLista(Nod** lista, Masina m)
+{
+	Nod* nou = (Nod*)malloc(sizeof(Nod));
+	nou->info = m;
+	nou->next = *lista;
+
+	(*lista) = nou;
+}
+
+Nod* masiniCuIdMare(Heap heap, int idMinim)
+{
+	Nod* lista = NULL;
+
+	while (heap.vector[0].id >= idMinim)
+	{
+		Masina m = extrageMasina(&heap);
+		inserareInLista(&lista, m);
+	}
+
+	return lista;
 }
 
 int main() {
 	Heap h = citireHeapDeMasiniDinFisier("masini-arbore.txt");
+	printf("Elementele sunt:\n");
 	afisareHeap(h);
 
+	Nod* lista = masiniCuIdMare(h, 4);
+	printf("Lista:\n");
+	afisareLista(lista);
+
+	/*Masina m = extrageMasina(&h);
+	printf("Prima masina extrasa este:\n");
+	afisareMasina(m);
+	extrageMasina(&h);
+	extrageMasina(&h);
+	extrageMasina(&h);
+	extrageMasina(&h);*/
+
+	printf("Elementele ascunse sunt:\n");
+	afiseazaHeapAscuns(h);
+
+	dezalocareHeap(&h);
+	while (lista)
+	{
+		Nod* aux = lista;
+		lista = lista->next;
+		free(aux);
+	}
+	free(lista);
 	return 0;
 }
