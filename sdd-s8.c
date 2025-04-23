@@ -191,13 +191,13 @@ void inserareInLista(Nod** lista, Masina m)
 	(*lista) = nou;
 }
 
-Nod* masiniCuIdMare(Heap heap, int idMinim)
+Nod* masiniCuIdMare(Heap* heap, int idMinim)
 {
 	Nod* lista = NULL;
 
-	while (heap.vector[0].id >= idMinim)
+	while (heap->vector[0].id >= idMinim)
 	{
-		Masina m = extrageMasina(&heap);
+		Masina m = extrageMasina(heap);
 		inserareInLista(&lista, m);
 	}
 
@@ -209,7 +209,7 @@ int main() {
 	printf("Elementele sunt:\n");
 	afisareHeap(h);
 
-	Nod* lista = masiniCuIdMare(h, 4);
+	Nod* lista = masiniCuIdMare(&h, 4);
 	printf("Lista:\n");
 	afisareLista(lista);
 
