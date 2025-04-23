@@ -53,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="baterii.txt" />
+    <Text Include="masini-arbore.txt" />
     <Text Include="masini.txt" />
     <Text Include="monezi.txt" />
   </ItemGroup>

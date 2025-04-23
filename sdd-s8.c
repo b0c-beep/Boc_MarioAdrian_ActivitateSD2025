@@ -3,9 +3,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-//trebuie sa folositi fisierul masini.txt
-//sau va creati un alt fisier cu alte date
-
 struct StructuraMasina {
 	int id;
 	int nrUsi;
@@ -16,10 +13,10 @@ struct StructuraMasina {
 };
 typedef struct StructuraMasina Masina;
 
-//creare structura pentru Heap
-//un vector de elemente, lungimea vectorului si numarul de elemente din vector
 struct Heap {
+	Masina* vector;
 	int lungime;
+	int nrMasini;
 };
 typedef struct Heap Heap;
 
@@ -55,19 +52,56 @@ void afisareMasina(Masina masina) {
 }
 
 Heap initializareHeap(int lungime) {
-	//initializeaza heap-ul cu 0 elemente 
-	//dar cu o lungime primita ca parametru
+	Heap h;
+	h.lungime = lungime;
+	h.nrMasini = 0;
+	h.vector = (Masina*)malloc(lungime * sizeof(Masina));
+	return h;
 }
 
 void filtreazaHeap(Heap heap, int pozitieNod) {
-	//filtreaza heap-ul pentru nodul a carei pozitie o primeste ca parametru
+	int pozStanga = 2 * pozitieNod + 1;
+	int pozDreapta = 2 * pozitieNod + 2;
+	int pozMax = pozitieNod;
+
+	if (pozStanga < heap.nrMasini && heap.vector[pozMax].id < heap.vector[pozStanga].id)
+	{
+		pozMax = pozStanga;
+	}
+	if (pozDreapta < heap.nrMasini && heap.vector[pozMax].id < heap.vector[pozStanga].id)
+	{
+		pozMax = pozDreapta;
+	}
+	if (pozMax != pozitieNod)
+	{
+		Masina aux = heap.vector[pozMax];
+		heap.vector[pozMax] = heap.vector[pozitieNod];
+		heap.vector[pozitieNod] = aux;
+		if (pozMax < (heap.nrMasini - 2) / 2)
+		{
+			filtreazaHeap(heap, pozMax);
+		}
+	}
 }
 
 Heap citireHeapDeMasiniDinFisier(const char* numeFisier) {
-	//citim toate masinile din fisier si le stocam intr-un heap 
-	// pe care trebuie sa il filtram astfel incat sa respecte 
-	// principiul de MAX-HEAP sau MIN-HEAP dupa un anumit criteriu
-	// sunt citite toate elementele si abia apoi este filtrat vectorul
+	Heap h = initializareHeap(10);
+	FILE* f = fopen(numeFisier, "r");
+
+	while (!feof(f))
+	{
+		Masina m = citireMasinaDinFisier(f);
+		h.vector[h.nrMasini] = m;
+		h.nrMasini++;
+	}
+	fclose(f);
+
+	for (int i = (h.nrMasini - 2) / 2; i >= 0; i--)
+	{
+		filtreazaHeap(h, i);
+	}
+
+	return h;
 }
 
 void afisareHeap(Heap heap) {

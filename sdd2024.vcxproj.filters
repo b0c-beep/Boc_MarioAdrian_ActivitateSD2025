@@ -53,5 +53,6 @@
     <Text Include="baterii.txt" />
     <Text Include="masini.txt" />
     <Text Include="monezi.txt" />
+    <Text Include="masini-arbore.txt" />
   </ItemGroup>
 </Project>
