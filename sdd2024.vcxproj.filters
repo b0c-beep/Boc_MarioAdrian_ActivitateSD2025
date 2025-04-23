@@ -45,7 +45,7 @@
     <ClCompile Include="bilet-moneda.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="bilet-reteta.c">
+    <ClCompile Include="sdd-s8.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
