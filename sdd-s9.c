@@ -3,9 +3,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-//trebuie sa folositi fisierul masini.txt
-//sau va creati un alt fisier cu alte date
-
 struct StructuraMasina {
 	int id;
 	int nrUsi;
@@ -16,7 +13,12 @@ struct StructuraMasina {
 };
 typedef struct StructuraMasina Masina;
 
-//creare structura pentru un nod dintr-un arbore binar de cautare
+struct Nod {
+	Masina info;
+	struct Nod* st;
+	struct Nod* dr;
+};
+typedef struct Nod Nod;
 
 Masina citireMasinaDinFisier(FILE* file) {
 	char buffer[100];
@@ -50,10 +52,24 @@ void afisareMasina(Masina masina) {
 }
 
 
-void adaugaMasinaInArbore(/*arborele de masini*/ Masina masinaNoua) {
-	//adauga o noua masina pe care o primim ca parametru in arbore,
-	//astfel incat sa respecte princiippile de arbore binar de cautare
-	//dupa o anumita cheie pe care o decideti - poate fi ID
+void adaugaMasinaInArbore(Nod** arbore, Masina masinaNoua) {
+	if (!(*arbore)) {
+		Nod* nou = (Nod*)malloc(sizeof(Nod));
+		nou->info = masinaNoua;
+		nou->st = NULL;
+		nou->dr = NULL;
+		*arbore = nou;
+	}
+	else {
+		if ((*arbore)->info.id > masinaNoua.id)
+		{
+			adaugaMasinaInArbore(&((*arbore)->st), masinaNoua);
+		}
+		else if ((*arbore)->info.id < masinaNoua.id)
+		{
+			adaugaMasinaInArbore(&((*arbore)->dr), masinaNoua);
+		}
+	}
 }
 
 void* citireArboreDeMasiniDinFisier(const char* numeFisier) {
@@ -101,6 +117,7 @@ float calculeazaPretulMasinilorUnuiSofer(/*arbore de masini*/ const char* numeSo
 }
 
 int main() {
+	Nod* radacina = NULL;
 
 
 	return 0;
