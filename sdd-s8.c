@@ -92,7 +92,7 @@ void filtreazaHeap(Heap heap, int pozitieNod) {
 	{
 		pozMax = pozStanga;
 	}
-	if (pozDreapta < heap.nrMasini && heap.vector[pozMax].id < heap.vector[pozStanga].id)
+	if (pozDreapta < heap.nrMasini && heap.vector[pozMax].id < heap.vector[pozDreapta].id)
 	{
 		pozMax = pozDreapta;
 	}
