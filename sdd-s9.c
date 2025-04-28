@@ -72,10 +72,17 @@ void adaugaMasinaInArbore(Nod** arbore, Masina masinaNoua) {
 	}
 }
 
-void* citireArboreDeMasiniDinFisier(const char* numeFisier) {
-	//functia primeste numele fisierului, il deschide si citeste toate masinile din fisier
-	//prin apelul repetat al functiei citireMasinaDinFisier()
-	//ATENTIE - la final inchidem fisierul/stream-ul
+Nod* citireArboreDeMasiniDinFisier(const char* numeFisier) {
+	FILE* f = fopen(numeFisier, "r");
+	Nod* radacina = NULL;
+
+	while (!feof(f))
+	{
+		adaugaMasinaInArbore(&radacina, citireMasinaDinFisier(f));
+	}
+
+	fclose(f);
+	return radacina;
 }
 
 void afisareMasiniDinArbore(/*arbore de masini*/) {
@@ -83,6 +90,33 @@ void afisareMasiniDinArbore(/*arbore de masini*/) {
 	//prin apelarea functiei afisareMasina()
 	//parcurgerea arborelui poate fi realizata in TREI moduri
 	//folositi toate cele TREI moduri de parcurgere
+}
+
+void afisareMasiniDinArboreInOrdineSRD(Nod* arbore) {
+	if (arbore)
+	{
+		afisareMasiniDinArboreInOrdineSRD(arbore->st);
+		afisareMasina(arbore->info);
+		afisareMasiniDinArboreInOrdineSRD(arbore->dr);
+	}
+}
+
+void afisareMasiniDinArborePreOrdineRSD(Nod* arbore) {
+	if (arbore)
+	{
+		afisareMasina(arbore->info);
+		afisareMasiniDinArboreInOrdineSRD(arbore->st);
+		afisareMasiniDinArboreInOrdineSRD(arbore->dr);
+	}
+}
+
+void afisareMasiniDinArborePostOrdineSDR(Nod* arbore) {
+	if (arbore)
+	{
+		afisareMasiniDinArboreInOrdineSRD(arbore->st);
+		afisareMasiniDinArboreInOrdineSRD(arbore->dr);
+		afisareMasina(arbore->info);
+	}
 }
 
 void dezalocareArboreDeMasini(/*arbore de masini*/) {
@@ -118,7 +152,12 @@ float calculeazaPretulMasinilorUnuiSofer(/*arbore de masini*/ const char* numeSo
 
 int main() {
 	Nod* radacina = NULL;
-
-
+	radacina = citireArboreDeMasiniDinFisier("masini-arbore.txt");
+	afisareMasiniDinArboreInOrdineSRD(radacina);
+	printf("\n\n");
+	afisareMasiniDinArborePreOrdineRSD(radacina);
+	printf("\n\n");
+	afisareMasiniDinArborePostOrdineSDR(radacina);
+	printf("\n\n");
 	return 0;
 }

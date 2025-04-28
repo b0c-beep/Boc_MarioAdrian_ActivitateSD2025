@@ -48,6 +48,9 @@
     <ClCompile Include="sdd-s8.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="sdd-s9.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="baterii.txt" />
