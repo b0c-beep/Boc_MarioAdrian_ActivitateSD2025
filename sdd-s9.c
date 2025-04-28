@@ -105,27 +105,53 @@ void afisareMasiniDinArborePreOrdineRSD(Nod* arbore) {
 	if (arbore)
 	{
 		afisareMasina(arbore->info);
-		afisareMasiniDinArboreInOrdineSRD(arbore->st);
-		afisareMasiniDinArboreInOrdineSRD(arbore->dr);
+		afisareMasiniDinArborePreOrdineRSD(arbore->st);
+		afisareMasiniDinArborePreOrdineRSD(arbore->dr);
 	}
 }
 
 void afisareMasiniDinArborePostOrdineSDR(Nod* arbore) {
 	if (arbore)
 	{
-		afisareMasiniDinArboreInOrdineSRD(arbore->st);
-		afisareMasiniDinArboreInOrdineSRD(arbore->dr);
+		afisareMasiniDinArborePostOrdineSDR(arbore->st);
+		afisareMasiniDinArborePostOrdineSDR(arbore->dr);
 		afisareMasina(arbore->info);
 	}
 }
 
-void dezalocareArboreDeMasini(/*arbore de masini*/) {
-	//sunt dezalocate toate masinile si arborele de elemente
+//folosim postordine SDR
+void dezalocareArboreDeMasini(Nod** arbore) {
+	if (*arbore)
+	{
+		dezalocareArboreDeMasini(&((*arbore)->st));
+		dezalocareArboreDeMasini(&((*arbore)->dr));
+		free((*arbore)->info.numeSofer);
+		free((*arbore)->info.model);
+		free((*arbore));
+		(*arbore) = NULL;
+	}
+
 }
 
-Masina getMasinaByID(/*arborele de masini*/int id) {
+Masina getMasinaByID(Nod* arbore, int id) {
 	Masina m;
-
+	m.id = -1;
+	if (arbore)
+	{
+		if (arbore->info.id < id)
+		{
+			return getMasinaByID(arbore->dr, id);
+		}
+		else if (arbore->info.id > id)
+		{
+			return getMasinaByID(arbore->st, id);
+		}
+		else
+		{
+			m = arbore->info;
+			return m;
+		}
+	}
 	return m;
 }
 
@@ -140,9 +166,13 @@ int calculeazaInaltimeArbore(/*arbore de masini*/) {
 	return 0;
 }
 
-float calculeazaPretTotal(/*arbore de masini*/) {
-	//calculeaza pretul tuturor masinilor din arbore.
-	return 0;
+float calculeazaPretTotal(Nod* arbore) {
+	if (arbore == NULL)
+		return 0;
+
+	float totalStanga = calculeazaPretTotal(arbore->st);
+	float totalDreapta = calculeazaPretTotal(arbore->dr);
+	return arbore->info.pret + totalStanga + totalDreapta;
 }
 
 float calculeazaPretulMasinilorUnuiSofer(/*arbore de masini*/ const char* numeSofer) {
@@ -153,11 +183,19 @@ float calculeazaPretulMasinilorUnuiSofer(/*arbore de masini*/ const char* numeSo
 int main() {
 	Nod* radacina = NULL;
 	radacina = citireArboreDeMasiniDinFisier("masini-arbore.txt");
+	printf("Afisare in ordine:\n");
 	afisareMasiniDinArboreInOrdineSRD(radacina);
-	printf("\n\n");
+	printf("\n\nAfisare in pre ordine:\n");
 	afisareMasiniDinArborePreOrdineRSD(radacina);
-	printf("\n\n");
+	printf("\n\nAfisare in post ordine:\n");
 	afisareMasiniDinArborePostOrdineSDR(radacina);
 	printf("\n\n");
+	Masina m = getMasinaByID(radacina, 6);
+	printf("Masina cautata:\n");
+	afisareMasina(m);
+	printf("\n\n");
+	float pretTotal = calculeazaPretTotal(radacina);
+	printf("Pret Total: %.2f\n\n", pretTotal);
+	dezalocareArboreDeMasini(&radacina);
 	return 0;
 }
