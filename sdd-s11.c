@@ -3,8 +3,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-//trebuie sa folositi fisierul masini.txt
-//sau va creati un alt fisier cu alte date
 
 struct StructuraMasina {
 	int id;
@@ -47,25 +45,58 @@ void afisareMasina(Masina masina) {
 	printf("Serie: %c\n\n", masina.serie);
 }
 
-//STACK
-//Alegeti prin ce veti reprezenta stiva si creati structura necesara acestei stive
-//putem reprezenta o stiva prin LSI, LDI sau vector
-void pushStack(/*stiva*/ Masina masina) {
+struct Nod {
+	Masina info;
+	struct Nod* next;
+};
+typedef struct Nod Nod;
 
+void pushStack(Nod** stiva, Masina masina) {
+	Nod* nou = (Nod*)malloc(sizeof(Nod));
+	nou->info = masina; //shallow copy
+	nou->next = (*stiva);
+	(*stiva) = nou;
 }
 
-Masina popStack(/*stiva*/) {
-
+Masina popStack(Nod** stiva) {
+	if ((*stiva) != NULL)
+	{
+		Masina m = (*stiva)->info;
+		//strcpy_s(m.model, strlen((*stiva)->info.model) + 1, (*stiva)->info.model);
+		//strcpy_s(m.numeSofer, strlen((*stiva)->info.numeSofer) + 1, (*stiva)->info.numeSofer);
+		Nod* temp = *stiva;
+		(*stiva) = temp->next;
+		free(temp);
+		return m;
+	}
+	return (Masina) { -1, 0, 0, NULL, NULL, '-' };
 }
 
 int emptyStack(/*stiva*/) {
 
 }
 
-void* citireStackMasiniDinFisier(const char* numeFisier) {
-	//functia primeste numele fisierului, il deschide si citeste toate masinile din fisier
-	//prin apelul repetat al functiei citireMasinaDinFisier()
-	//ATENTIE - la final inchidem fisierul/stream-ul
+Nod* citireStackMasiniDinFisier(const char* numeFisier) {
+	FILE* f = fopen(numeFisier, "r");
+	Nod* stiva = NULL;
+
+	while (!feof(f))
+	{
+		pushStack(&stiva, citireMasinaDinFisier(f));
+	}
+
+	fclose(f);
+	return stiva;
+}
+
+void afisareStack(Nod* stiva)
+{
+	Nod* p = stiva;
+	while (p != NULL)
+	{
+		afisareMasina(p->info);
+		p = p->next;
+	}
 }
 
 void dezalocareStivaDeMasini(/*stiva*/) {
@@ -104,7 +135,10 @@ Masina getMasinaByID(/*stiva sau coada de masini*/int id);
 float calculeazaPretTotal(/*stiva sau coada de masini*/);
 
 int main() {
-
-
+	Nod* stiva = citireStackMasiniDinFisier("masini.txt");
+	afisareStack(stiva);
+	popStack(&stiva);
+	printf("\n\n\n");
+	afisareStack(stiva);
 	return 0;
 }

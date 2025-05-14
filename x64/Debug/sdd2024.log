@@ -1,10 +1,8 @@
 ﻿C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(531,5): warning MSB8028: The intermediate directory (x64\Debug\) contains files shared from another project (sdd2024.vcxproj).  This can lead to incorrect clean and rebuild behavior.
   sdd-s11.c
-D:\MVS\sdd2025\sdd2024\sdd-s11.c(28,12): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-D:\MVS\sdd2025\sdd2024\sdd-s11.c(63,1): warning C4716: 'emptyStack': must return a value
-D:\MVS\sdd2025\sdd2024\sdd-s11.c(59,1): warning C4716: 'popStack': must return a value
-D:\MVS\sdd2025\sdd2024\sdd-s11.c(69,1): warning C4716: 'citireStackMasiniDinFisier': must return a value
-D:\MVS\sdd2025\sdd2024\sdd-s11.c(77,1): warning C4716: 'size': must return a value
-D:\MVS\sdd2025\sdd2024\sdd-s11.c(88,1): warning C4716: 'dequeue': must return a value
-D:\MVS\sdd2025\sdd2024\sdd-s11.c(94,1): warning C4716: 'citireCoadaDeMasiniDinFisier': must return a value
+D:\MVS\sdd2025\sdd2024\sdd-s11.c(26,12): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+D:\MVS\sdd2025\sdd2024\sdd-s11.c(77,1): warning C4716: 'emptyStack': must return a value
+D:\MVS\sdd2025\sdd2024\sdd-s11.c(108,1): warning C4716: 'size': must return a value
+D:\MVS\sdd2025\sdd2024\sdd-s11.c(125,1): warning C4716: 'citireCoadaDeMasiniDinFisier': must return a value
+D:\MVS\sdd2025\sdd2024\sdd-s11.c(119,1): warning C4716: 'dequeue': must return a value
   sdd2024.vcxproj -> D:\MVS\sdd2025\x64\Debug\sdd2025.exe
