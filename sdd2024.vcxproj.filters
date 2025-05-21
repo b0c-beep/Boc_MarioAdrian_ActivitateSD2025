@@ -66,5 +66,6 @@
     <Text Include="masini.txt" />
     <Text Include="monezi.txt" />
     <Text Include="masini-arbore.txt" />
+    <Text Include="muchii.txt" />
   </ItemGroup>
 </Project>

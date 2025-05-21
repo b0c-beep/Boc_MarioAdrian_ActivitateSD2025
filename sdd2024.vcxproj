@@ -68,6 +68,7 @@
     <Text Include="masini-arbore.txt" />
     <Text Include="masini.txt" />
     <Text Include="monezi.txt" />
+    <Text Include="muchii.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

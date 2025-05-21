@@ -3,8 +3,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-//trebuie sa folositi fisierul masini.txt
-//sau va creati un alt fisier cu alte date
 
 struct StructuraMasina {
 	int id;
@@ -47,47 +45,138 @@ void afisareMasina(Masina masina) {
 	printf("Serie: %c\n\n", masina.serie);
 }
 
-//1. 
-// structuri necesare
-//dorim stocarea unui graf intr-o lista de liste
-//astfel avem nod ListaPrincipala si NodListaSecundara
 
-//2.
-//functii de inserare in liste
-//si in principala si in secundara
+typedef struct NodLP NodLP;
+typedef struct NodLS NodLS;
 
-//3.
-//functie de cautarea in lista principala dupa ID
-void* cautaNodDupaID(void* listaPrincipala, int id) {
+struct NodLP {
+	Masina info;
+	NodLP* next;
+	NodLS* vecini;
+};
 
+struct NodLS {
+	NodLS* next;
+	NodLP* nodInfo;
+};
+
+
+void inserareLP(NodLP** cap, Masina masina)
+{
+	NodLP* nou = (NodLP*)malloc(sizeof(NodLP));
+	nou->next = NULL;
+	nou->info = masina;
+	nou->vecini = NULL;
+
+	if ((*cap))
+	{
+		NodLP* p = *cap;
+		while (p->next != NULL) {
+			p = p->next;
+		}
+		p->next = nou;
+	}
+	else {
+		*cap = nou;
+	}
 }
 
-//4.
-//inserare muchie
-void inserareMuchie(void* listaPrincipala, int idStart, int idStop) {
-
+void inserareLS(NodLS** cap, NodLP* nodInfo)
+{
+	NodLS* nou = (NodLS*)malloc(sizeof(NodLS));
+	nou->next = *cap;
+	nou->nodInfo = nodInfo;
+	*cap = nou;
 }
 
 
-void* citireNoduriMasiniDinFisier(const char* numeFisier) {
-	//functia primeste numele fisierului, il deschide si citeste toate masinile din fisier
-	//prin apelul repetat al functiei citireMasinaDinFisier()
-	//ATENTIE - la final inchidem fisierul/stream-ul
+NodLP* cautaNodDupaID(NodLP* cap, int id) {
+	while (cap && cap->info.id != id)
+	{
+		cap = cap->next;
+	}
+	return cap;
 }
 
-void citireMuchiiDinFisier(const char* numeFisier) {
-	//functia primeste numele fisierului, il deschide si citeste 
-	//toate id-urile de start si stop pentru fiecare muchie
-	//ATENTIE - la final inchidem fisierul/stream-ul
+
+void inserareMuchie(NodLP* cap, int idStart, int idStop) {
+	NodLP* nodStart = cautaNodDupaID(cap, idStart);
+	NodLP* nodStop = cautaNodDupaID(cap, idStop);
+	if (nodStart && nodStop)
+	{
+		inserareLS(&(nodStart->vecini), nodStop);
+		inserareLS(&(nodStop->vecini), nodStart);
+	}
 }
 
-void dezalocareNoduriGraf(void* listaPrincipala) {
-	//sunt dezalocate toate masinile din graf 
-	//si toate nodurile celor doua liste
+
+NodLP* citireNoduriMasiniDinFisier(const char* numeFisier) {
+	FILE* f = fopen(numeFisier, "r");
+	NodLP* graf = NULL;
+
+	if (f)
+	{
+		while (!feof(f))
+		{
+			inserareLP(&graf, citireMasinaDinFisier(f));
+		}
+	}
+
+	fclose(f);
+	return graf;
+}
+
+void citireMuchiiDinFisier(const char* numeFisier, NodLP* graf) {
+	FILE* f = fopen(numeFisier, "r");
+
+	if (f)
+	{
+		while (!feof(f))
+		{
+			int idStart;
+			int idStop;
+
+			fscanf(f, "%d %d", &idStart, &idStop);
+			inserareMuchie(graf, idStart, idStart);
+		}
+		fclose(f);
+	}
+}
+
+void stergereLS(NodLS** cap)
+{
+	while (*cap)
+	{
+		NodLS* aux = (*cap)->next;
+		free(*cap);
+		*cap = aux;
+	}
+}
+
+void dezalocareNoduriGraf(NodLP** cap) {
+	while (*cap)
+	{
+		NodLP* aux = (*cap)->next;
+		stergereLS(&((*cap)->vecini));
+		if((*cap)->info.numeSofer)
+			free((*cap)->info.numeSofer);
+		if ((*cap)->info.model)
+			free((*cap)->info.model);
+		free(*cap);
+		*cap = aux;
+	}
+}
+
+NodLP* citireGrafDinFisier(const char* numeFisierNoduri, const char* numeFisierMuchii)
+{
+	NodLP* graf = citireNoduriMasiniDinFisier(numeFisierNoduri);
+	citireMuchiiDinFisier(numeFisierMuchii, graf);
+	return graf;
 }
 
 int main() {
+	NodLP* graf = citireGrafDinFisier("masini.txt", "muchii.txt");
 
-
+	dezalocareNoduriGraf(&graf);
 	return 0;
 }
