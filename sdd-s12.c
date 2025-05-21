@@ -42,7 +42,7 @@ void afisareMasina(Masina masina) {
 	printf("Pret: %.2f\n", masina.pret);
 	printf("Model: %s\n", masina.model);
 	printf("Nume sofer: %s\n", masina.numeSofer);
-	printf("Serie: %c\n\n", masina.serie);
+	printf("Serie: %c", masina.serie);
 }
 
 
@@ -137,10 +137,11 @@ void citireMuchiiDinFisier(const char* numeFisier, NodLP* graf) {
 			int idStop;
 
 			fscanf(f, "%d %d", &idStart, &idStop);
-			inserareMuchie(graf, idStart, idStart);
+			inserareMuchie(graf, idStart, idStop);
 		}
-		fclose(f);
+
 	}
+	fclose(f);
 }
 
 void stergereLS(NodLS** cap)
@@ -174,9 +175,27 @@ NodLP* citireGrafDinFisier(const char* numeFisierNoduri, const char* numeFisierM
 	return graf;
 }
 
+void afisareGraf(NodLP* graf) {
+	while (graf)
+	{
+		printf("In nodul %d avem masina:", graf->info.id);
+		afisareMasina(graf->info);
+		printf("aceasta are ca vecini nodurile urmatoare: ");
+		NodLS* p = graf->vecini;
+		while (p)
+		{
+			printf("%d, ", p->nodInfo->info.id);
+			p = p->next;
+		}
+		printf("\n\n");
+		graf = graf->next;
+	}
+}
+
+
 int main() {
 	NodLP* graf = citireGrafDinFisier("masini.txt", "muchii.txt");
-
+	afisareGraf(graf);
 	dezalocareNoduriGraf(&graf);
 	return 0;
 }
